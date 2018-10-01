@@ -8,6 +8,8 @@ const server = net.createServer(c => {
 	console.log('Server: Client connected');
 	clients[c.__fd] = c;
 
+	c.write('Hello');
+
 	if(lastEvent) {
 		c.write(JSON.stringify(lastEvent));
 	}
