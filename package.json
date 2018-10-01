@@ -1,0 +1,7 @@
+{
+	"name": "toth-donation-repeater-simple",
+	"description": "Plain socket donation repeater for toth-plugin",
+	"dependencies": {
+		"socket.io-client": "^2.1.1"
+	}
+}
