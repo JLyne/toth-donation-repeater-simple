@@ -6,6 +6,12 @@ let lastEvent = null;
 
 const server = net.createServer(c => {
 	console.log('Server: Client connected');
+
+	//Prevents clients from staying connected and never receiving new donations, rather than falling back to HTTP
+	if(!client.connected) {
+		c.disconnect();
+	}
+
 	clients[c.__fd] = c;
 
 	if(lastEvent) {
@@ -44,6 +50,19 @@ client.on('donation', function(data) {
 	for(let client in clients) {
 		if(clients.hasOwnProperty(client)) {
 			clients[client].write(JSON.stringify(data));
+		}
+	}
+});
+
+client.on('disconnect', (reason) => {
+	if (reason === 'io server disconnect') {
+		client.connect();
+	}
+
+	//Prevents clients from staying connected and never receiving new donations, rather than falling back to HTTP
+	for(let client in clients) {
+		if(clients.hasOwnProperty(client)) {
+			clients[client].disconnect();
 		}
 	}
 });
